@@ -1,0 +1,26 @@
+name: Join Request Handler
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  process_join_request:
+    if: contains(github.event.issue.labels.*.name, 'join-request')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Validate request format
+        run: |
+          echo "Verifying join request content..."
+          echo "Issue title: ${{ github.event.issue.title }}"
+          echo "Issue body: ${{ github.event.issue.body }}"
+
+      - name: Approve and label
+        uses: peter-evans/issue-comment@v3
+        with:
+          issue-number: ${{ github.event.issue.number }}
+          body: |
+            ✅ Your join request has been received.  
+            The AIC core team will review your profile and invite you if qualified.
