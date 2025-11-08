@@ -1,0 +1,36 @@
+name: Join Adaptive Intelligence Circle
+on:
+  workflow_dispatch:
+    inputs:
+      github_username:
+        description: 'GitHub username của contributor muốn tham gia'
+        required: true
+      role:
+        description: 'Vai trò mong muốn (developer, researcher, documenter, tester, etc.)'
+        required: true
+      reason:
+        description: 'Lý do muốn tham gia AIC'
+        required: true
+
+jobs:
+  join_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Log join request
+        run: |
+          echo "📥 New Join Request" >> .github/join_requests.log
+          echo "User: ${{ github.event.inputs.github_username }}" >> .github/join_requests.log
+          echo "Role: ${{ github.event.inputs.role }}" >> .github/join_requests.log
+          echo "Reason: ${{ github.event.inputs.reason }}" >> .github/join_requests.log
+          echo "Time: $(date)" >> .github/join_requests.log
+          echo "---" >> .github/join_requests.log
+
+      - name: Notify maintainers
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "New Join Request - ${{ github.event.inputs.github_username }}"
+          content-filepath: .github/join_requests.log
+          labels: "join, pending-review"
