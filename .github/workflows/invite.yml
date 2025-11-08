@@ -1,0 +1,19 @@
+name: Invite New Member
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  invite_user:
+    if: contains(github.event.issue.labels.*.name, 'approved-member')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send invitation
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          USERNAME: ${{ github.event.issue.user.login }}
+        run: |
+          echo "Inviting $USERNAME to AIC organization..."
+          gh api orgs/AdaptiveIntelligenceCircle/invitations \
+            -f invitee_id=$(gh api users/$USERNAME --jq '.id') \
+            -f role=direct_member
