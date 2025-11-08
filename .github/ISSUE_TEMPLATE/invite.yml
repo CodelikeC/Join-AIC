@@ -1,0 +1,29 @@
+name: Invite Contributor
+on:
+  workflow_dispatch:
+    inputs:
+      github_username:
+        description: 'GitHub username của người được mời'
+        required: true
+      team:
+        description: 'Tên team trong tổ chức (ví dụ: core, ai-research, protocol, doc)'
+        required: true
+
+jobs:
+  invite_member:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send invitation
+        uses: peter-evans/create-or-update-team@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          organization: Adaptive-Intelligence-Circle
+          team-name: ${{ github.event.inputs.team }}
+          team-description: "Official team for ${{ github.event.inputs.team }} module"
+          team-maintainers: "AIC-Owner"
+          team-privacy: closed
+          members: ${{ github.event.inputs.github_username }}
+
+      - name: Log invitation
+        run: |
+          echo "✅ Invited ${{ github.event.inputs.github_username }} to team ${{ github.event.inputs.team }} at $(date)" >> .github/invite_history.log
