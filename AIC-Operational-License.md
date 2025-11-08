@@ -124,7 +124,7 @@ Any use that contradicts the **human-centric, self-defensive, or peaceful intent
 **Licensor:**  
 Nguyễn Đức Trí  
 Founder, Adaptive Intelligence Circle  
-Email: contact@adaptive-intelligence.org  
+Email: ndtribk@gmail.com   
 GitHub: [github.com/AdaptiveIntelligenceCircle](https://github.com/AdaptiveIntelligenceCircle)
 
 **Licensee:**  
